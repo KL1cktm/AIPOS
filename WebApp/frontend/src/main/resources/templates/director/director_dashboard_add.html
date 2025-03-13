@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Добавление</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMF0N1fHnb3g5N4Hn7VNT5zWEO7tM+88tL50fE" crossorigin="anonymous">
+    <style>
+        body {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+        .btn-custom {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #218838;
+        }
+        .alert {
+            border-radius: 5px;
+        }
+        .lines {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .line {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            height: 2px;
+            width: 100%;
+            animation: line-animation 4s infinite;
+            opacity: 0.7;
+        }
+        .line:nth-child(1) {
+            top: 20%;
+            animation-delay: 0s;
+            animation-duration: 4s;
+            transform: rotate(20deg);
+        }
+        .line:nth-child(2) {
+            top: 40%;
+            animation-delay: 0.5s;
+            animation-duration: 3.5s;
+            transform: rotate(-15deg);
+        }
+        .line:nth-child(3) {
+            top: 60%;
+            animation-delay: 1s;
+            animation-duration: 5s;
+            transform: rotate(10deg);
+        }
+        .line:nth-child(4) {
+            top: 80%;
+            animation-delay: 1.5s;
+            animation-duration: 4.5s;
+            transform: rotate(-25deg);
+        }
+        .line:nth-child(5) {
+            top: 10%;
+            animation-delay: 2s;
+            animation-duration: 4.8s;
+            transform: rotate(30deg);
+        }
+        @keyframes line-animation {
+            0% {
+                transform: translateX(-100%) translateY(0);
+            }
+            25% {
+                transform: translateX(50%) translateY(-30px);
+            }
+            50% {
+                transform: translateX(100%) translateY(20px);
+            }
+            75% {
+                transform: translateX(50%) translateY(-15px);
+            }
+            100% {
+                transform: translateX(100%) translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="d-flex justify-content-between align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    <h5 class="my-0 font-weight-normal">Панель добавления</h5>
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <a class="btn btn-outline-primary" href="/director/director_dashboard">Выбор операции</a>
+        <a class="btn btn-outline-danger" href="/logout">Выход</a>
+    </div>
+</div>
+
+<div class="container mt-4">
+        <form th:action="@{/director/createEmployee}" method="post" class="mb-4">
+        <h5>Добавление сотрудника</h5>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                    <input type="text" class="form-control" placeholder="ФИО сотрудника" required name="employee_name">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-box"></i></span>
+                    <input type="text" class="form-control" placeholder="Должность" required name="rang">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-list"></i></span>
+                    <select name="combines" class="form-control" required>
+                        <option value="" disabled selected>Выберите комбинат</option>
+                        <option th:each="combine : ${combines}" th:value="${combine}" th:text="${combine}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-custom w-100">Добавить сотрудника</button>
+            </div>
+            <div class="col-md-12">
+                <div th:if="${param.create_employee_error}" class="alert alert-danger mt-3">
+                    Сотрудник не был добавлен!
+                </div>
+                <div th:if="${param.create_employee}" class="alert alert-success mt-3">
+                    Сотрудник был добавлен!
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form th:action="@{/director/createCombine}" method="post">
+        <h5>Добавить комбинат</h5>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-box"></i></span>
+                    <input type="text" class="form-control" placeholder="Адрес" required name="address">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <select name="regions" class="form-control" required>
+                        <option value="" disabled selected>Выберите Регион</option>
+                        <option th:each="region : ${regions}" th:value="${region}" th:text="${region}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-box"></i></span>
+                    <input type="text" class="form-control" placeholder="Название" required name="name">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-box"></i></span>
+                    <input type="text" class="form-control" placeholder="Телефон" required name="phone">
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-custom w-100">Добавить комбинат</button>
+            </div>
+            <div class="col-md-12">
+                <div th:if="${param.combine_exist}" class="alert alert-danger mt-3">
+                    Комбинат уже существует!
+                </div>
+                <div th:if="${param.combine_added}" class="alert alert-success mt-3">
+                    Комбинат был добавлен!
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="lines">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-Oc6azYgHhwYf6MA2WbM4N9bYwz96tF3LV/7+35jYw+tMB57mlU5v6T8XVoBjc2P" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/1Y7FZP0xX8I6aV9Zb7j6I6mH9J3y/0vPh2GQf5" crossorigin="anonymous"></script>
+</body>
+</html>
+f

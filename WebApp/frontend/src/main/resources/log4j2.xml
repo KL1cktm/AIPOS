@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <!-- Настройка консольного аппендера -->
+    <Appenders>
+        <!-- Аппендер для вывода в консоль -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</Pattern>
+            </PatternLayout>
+        </Console>
+
+        <!-- Аппендер для записи в файл -->
+        <File name="File" fileName="D:/Университет/Университет/3 курс актуально/AIPOS/changed/WebApp/frontend/logs/app.log" append="true">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</Pattern>
+            </PatternLayout>
+        </File>
+
+    </Appenders>
+
+    <!-- Логирование -->
+    <Loggers>
+        <!-- Настройка root логера, который будет использовать оба аппендера -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

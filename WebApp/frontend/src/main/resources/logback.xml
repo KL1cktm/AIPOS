@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Конфигурация аппендера для вывода в консоль -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Конфигурация аппендера для записи в файл -->
+    <appender name="File" class="ch.qos.logback.core.FileAppender">
+        <file>logs/client.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern> <!-- Формат вывода -->
+        </encoder>
+    </appender>
+
+    <!-- Логгер для пакета 'by.yurhilevich.WebApp.controllers' -->
+    <logger name="by.yurhilevich.WebApp.controllers" level="debug">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="File"/>
+    </logger>
+
+    <!-- Определение корневого логгера для всех остальных логов (например, библиотеки) -->
+    <root level="warn">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="File"/>
+    </root>
+
+</configuration>

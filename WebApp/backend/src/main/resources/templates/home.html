@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <title>Учёт цен</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta name="theme-color" content="#563d7c">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            height: 100vh;
+            margin: 0;
+        }
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            user-select: none;
+        }
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        .bg-custom {
+            background: linear-gradient(to bottom, #ffffff 0%, #e9ecef 100%);
+            height: 100vh; /* Занимает всю высоту экрана */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border-radius: 0; /* Убираем закругление */
+            box-shadow: none; /* Убираем тень */
+        }
+        .footer {
+            background-color: #e9ecef;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .welcome-message {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        /* Новые стили для отступа */
+        .header-content {
+            margin-top: -50px; /* Увеличьте или уменьшите это значение, чтобы поднять или опустить текст */
+        }
+    </style>
+</head>
+<body>
+
+<main role="main">
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+        <h5 class="my-0 mr-md-auto font-weight-normal">KL1ck application</h5>
+        <div class="d-flex ms-auto">
+            <div th:if="${role == 'ROLE_ADMIN'}">
+                <a class="btn btn-outline-primary ms-2" href="admin/admin_panel">Панель администратора</a>
+            </div>
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <a class="btn btn-outline-danger ms-2" href="/logout">Выход</a>
+            </div>
+            <div th:if="${#authorization.expression('!isAuthenticated()')}">
+                <a class="btn btn-outline-primary ms-2" href="/login">Авторизация</a>
+            </div>
+        </div>
+    </div>
+
+    <section class="bg-custom">
+        <div class="container text-center header-content">
+            <h1 class="display-4 font-weight-bold">Приложение учёта цен на мясо и молоко</h1>
+            <p class="lead text-muted">Управляйте данными о ценах и получайте аналитические отчёты.</p>
+
+            <div th:switch="${role}" class="mt-4">
+                <a th:case="'ROLE_ADMIN'" href="/admin/choose_activity" class="btn btn-primary my-2 btn-lg">
+                    <i class="fas fa-user-cog"></i> Перейти в редактор
+                </a>
+                <a th:case="'ROLE_ANALYST'" href="analyst/analyst_dashboard" class="btn btn-primary my-2 btn-lg">
+                    <i class="fas fa-chart-line"></i> Перейти в редактор
+                </a>
+                <a th:case="'ROLE_DIRECTOR'" href="/director/director_dashboard" class="btn btn-primary my-2 btn-lg">
+                    <i class="fas fa-user-tie"></i> Перейти в редактор
+                </a>
+                <p th:case="*" class="lead text-muted mt-3">Авторизируйтесь для возможности просматривать информацию</p>
+            </div>
+
+            <div th:switch="${role}" class="welcome-message">
+                <p th:case="'ROLE_ADMIN'">Здравствуйте, Администратор! У вас полный доступ к системе.</p>
+                <p th:case="'ROLE_ANALYST'">Здравствуйте, Аналитик! У вас ограниченный доступ.</p>
+                <p th:case="'ROLE_DIRECTOR'">Здравствуйте, Директор! Вы можете управлять пользователями и ресурсами.</p>
+                <p th:case="*">Здравствуйте, Гость! Пожалуйста, войдите в систему для доступа к дополнительным функциям.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">© 2024 Учёт цен на мясо и молоко. Все права защищены.</span>
+        </div>
+    </footer>
+
+</main>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+
+</body>
+</html>
